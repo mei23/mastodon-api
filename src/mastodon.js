@@ -8,20 +8,16 @@ import StreamingAPIConnection from './streaming-api-connection'
 
 import {
     STATUS_CODES_TO_ABORT_ON,
-    DEFAULT_REST_ROOT,
-    DEFAULT_REST_BASE,
-    REQUIRED_KEYS_FOR_AUTH,
-    DEFAULT_OAUTH_APPS_ENDPOINT
+    REQUIRED_KEYS_FOR_AUTH
 } from './settings'
 
 class Mastodon {
 
     constructor(config) {
-        this.apiUrl = config.api_url || DEFAULT_REST_ROOT
-
         Mastodon._validateConfigOrThrow(config)
 
         this.config = config
+        this.apiUrl = config.api_url
         this._mastodon_time_minus_local_time_ms = 0
     }
 
@@ -284,13 +280,17 @@ class Mastodon {
             throw new TypeError(`config must be object, got ${typeof config}.`)
         }
 
+        if (!config.api_url) {
+            throw new Error("Mastodon config must include 'api_url'")
+        }
+
         if (typeof config.timeout_ms !== 'undefined'
                 && isNaN(Number(config.timeout_ms))) {
             throw new TypeError(`config parameter 'timeout_ms' must be a Number, got ${config.timeout_ms}.`)
         }
     }
 
-    static createOAuthApp(url = DEFAULT_OAUTH_APPS_ENDPOINT,
+    static createOAuthApp(url,
                           clientName = 'mastodon-node',
                           scopes = 'read write follow',
                           redirectUri = 'urn:ietf:wg:oauth:2.0:oob') {
@@ -318,7 +318,7 @@ class Mastodon {
     }
 
     static getAuthorizationUrl(clientId, clientSecret,
-                               baseUrl = DEFAULT_REST_BASE,
+                               baseUrl,
                                scope = 'read write follow',
                                redirectUri = 'urn:ietf:wg:oauth:2.0:oob') {
         return new Promise((resolve) => {
@@ -334,7 +334,7 @@ class Mastodon {
     }
 
     static getAccessToken(clientId, clientSecret, authorizationCode,
-                          baseUrl = DEFAULT_REST_BASE,
+                          baseUrl,
                           redirectUri = 'urn:ietf:wg:oauth:2.0:oob') {
         return new Promise((resolve, reject) => {
             const oauth = new OAuth2(clientId, clientSecret, baseUrl, null, '/oauth/token')

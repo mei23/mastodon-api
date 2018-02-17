@@ -38,7 +38,7 @@ These values should be stored and used from now on. Ideally only call this once!
 
 **url**
 
-Optional. The base url of the Mastodon instance. Defaults to `https://mastodon.social/api/v1/apps`
+The base url of the Mastodon instance. For example `https://example.com/api/v1/apps`
 
 **clientName**
 
@@ -66,7 +66,7 @@ Your `client_secret`.
 
 **baseUrl**
 
-Optional. Defaults to `https://mastodon.social`.
+For example `https://example.com`.
 
 **scope**
 
@@ -94,7 +94,7 @@ The authorization code you should have got from the authorization page.
 
 **baseUrl**
 
-Optional. Defaults to `https://mastodon.social`.
+Defaults to `https://example.com`.
 
 
 ```javascript
@@ -103,7 +103,7 @@ import Mastodon from 'mastodon-api'
 const M = new Mastodon({
   access_token: '...',
   timeout_ms: 60*1000,  // optional HTTP request timeout to apply to all requests.
-  api_url: 'https://gay.crime.team/api/v1/', // optional, defaults to https://mastodon.social/api/v1/
+  api_url: 'https://example.com/api/v1/',
 })
 ```
 
