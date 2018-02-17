@@ -130,7 +130,7 @@ class Mastodon {
             headers: {
                 Accept: '*/*',
                 'User-Agent': 'node-mastodon-client',
-                Authorization: `Bearer ${this.config.access_token}`
+                Authorization: this.config.access_token ? `Bearer ${this.config.access_token}` : undefined
             },
             gzip: true,
             encoding: null
@@ -288,12 +288,6 @@ class Mastodon {
                 && isNaN(Number(config.timeout_ms))) {
             throw new TypeError(`config parameter 'timeout_ms' must be a Number, got ${config.timeout_ms}.`)
         }
-
-        REQUIRED_KEYS_FOR_AUTH.forEach((reqKey) => {
-            if (!config[reqKey]) {
-                throw new Error(`Mastodon config must include '${reqKey}' when using 'user_auth'`)
-            }
-        })
     }
 
     static createOAuthApp(url = DEFAULT_OAUTH_APPS_ENDPOINT,
