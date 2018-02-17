@@ -234,6 +234,10 @@ class StreamingAPIConnection extends EventEmitter {
 
         self.parser.on('element', (msg) => {
             self.emit('message', msg)
+
+            if (msg.event.match(/^(update|notification|delete)$/)) {
+                self.emit(msg.event, msg.data)
+            }
         })
         self.parser.on('error', (err) => {
             self.emit('parser-error', err)
